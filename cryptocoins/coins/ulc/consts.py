@@ -1,0 +1,3 @@
+ULC = 27
+CODE = 'ULC'
+DECIMALS = 18

@@ -24,6 +24,7 @@ ERC20_CURRENCIES: Dict[Currency, TokenParams] = {}
 TRC20_CURRENCIES: Dict[Currency, TokenParams] = {}
 BEP20_CURRENCIES: Dict[Currency, TokenParams] = {}
 ERC20_MATIC_CURRENCIES: Dict[Currency, TokenParams] = {}
+ERC20_ULC_CURRENCIES: Dict[Currency, TokenParams] = {}
 
 ALL_TOKEN_CURRENCIES: List[Currency] = []
 

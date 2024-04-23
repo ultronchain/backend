@@ -10,6 +10,7 @@ from cryptocoins.coins.eth.ethereum import ethereum_manager
 from cryptocoins.coins.matic.polygon import matic_manager
 from cryptocoins.coins.trx.tron import tron_manager
 from cryptocoins.coins.bnb.bnb import bnb_manager
+from cryptocoins.coins.ulc.ulc import ulc_manager
 from lib.cipher import AESCoderDecoder
 
 CryptoBitcoin = Bitcoin()
@@ -104,3 +105,9 @@ class MaticApproveAdminForm(BaseApproveAdminForm):
 
     def get_encrypted_string(self):
         return matic_manager.get_keeper_wallet().private_key
+    
+
+class UlcApproveAdminForm(BaseApproveAdminForm):
+
+    def get_encrypted_string(self):
+        return ulc_manager.get_keeper_wallet().private_key

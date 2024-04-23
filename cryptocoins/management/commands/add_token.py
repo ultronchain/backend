@@ -125,7 +125,7 @@ class Command(BaseCommand):
             # common token data
             token_symbol = prompt('Token symbol* (i.e. USDT)').upper()
             blockchain_symbol = prompt('Token blockchain symbol* (i.e. ETH)', choices=[
-                'ETH', 'BNB', 'TRX', 'MATIC',
+                'ETH', 'BNB', 'TRX', 'MATIC', 'ULC',
             ])
 
             if is_token_exists(token_symbol, blockchain_symbol):

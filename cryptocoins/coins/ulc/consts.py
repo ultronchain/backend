@@ -1,3 +1,3 @@
-ULC = 622
+ULC = 662
 CODE = 'ULC'
 DECIMALS = 18

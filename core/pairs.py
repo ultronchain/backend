@@ -10,6 +10,8 @@ PAIRS_LIST = [
     (ETH_USDT, 'ETH-USDT'),
     (TRX_USDT, 'TRX-USDT'),
     (BNB_USDT, 'BNB-USDT'),
+    (ULC_USDT, 'ULC-USDT'),
+    
 ]
 
 

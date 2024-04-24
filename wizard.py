@@ -39,6 +39,7 @@ from cryptocoins.coins.usdt import USDT
 from cryptocoins.coins.bnb import BNB
 from cryptocoins.coins.trx import TRX
 from cryptocoins.coins.matic import MATIC
+from cryptocoins.coins.ulc import ULC
 
 from cryptocoins.utils.btc import generate_btc_multisig_keeper
 
@@ -56,6 +57,7 @@ def main():
     IS_TRON = env('COMMON_TASKS_TRON', default=True, cast=bool)
     IS_BSC = env('COMMON_TASKS_BNB', default=True, cast=bool)
     IS_MATIC = env('COMMON_TASKS_MATIC', default=True, cast=bool)
+    IS_ULC = env('COMMON_TASKS_ULC', default=True, cast=bool)
 
     coin_list = [
         ETH,
@@ -64,6 +66,7 @@ def main():
         BNB,
         TRX,
         MATIC,
+        ULC,
     ]
     coin_info = {
         ETH: [
@@ -253,6 +256,56 @@ def main():
                 },
             },
         ],
+        ULC: [
+    {
+        'model': CoinInfo,
+        'find': {'currency': ULC},
+        'attributes': {
+            'name': 'ULC',
+            'decimals': 8,
+            'index': 28,  # Adjust the index appropriately for ULC
+            'tx_explorer': 'https://scan.ultronsmartchain.io/tx/',  # Adjust the explorer URL if needed
+            'links': {
+                "bt": {"href": "", "title": "BitcoinTalk"},
+                "cmc": {"href": "", "title": "CoinMarketCap"},
+                "exp": {"href": "", "title": "Explorer"},
+                "official": {"href": "", "title": "Official Website"}  # Put the actual URL
+            },
+            'logo': 'https://example.com/path_to_ulc_logo.png',  # Update the URL to the actual logo
+        },
+    },
+    {
+        'model': FeesAndLimits,
+        'find': {'currency': ULC},
+        'attributes': {
+            'limits_deposit_min': 0.00010000,
+            'limits_deposit_max': 10000000.00000000,
+            'limits_withdrawal_min': 0.00010000,
+            'limits_withdrawal_max': 10000000.00000000,
+            'limits_order_min': 0.01000000,
+            'limits_order_max': 100000000.00000000,
+            'limits_code_max': 10000000.00000000,
+            'limits_accumulation_min': 0.00010000,
+            'fee_deposit_address': 0,
+            'fee_deposit_code': 0,
+            'fee_withdrawal_code': 0,
+            'fee_order_limits': 0.00100000,
+            'fee_order_market': 0.00200000,
+            'fee_exchange_value': 0.00200000,
+            'limits_keeper_accumulation_balance': 100.00000000,
+            'limits_accumulation_max_gas_price': 500.00000000,
+        },
+    },
+    {
+        'model': WithdrawalFee,
+        'find': {'currency': ULC},
+        'attributes': {
+            'blockchain_currency': ULC,
+            'address_fee': 0.00100000  # Adjust the fee appropriately
+        },
+    },
+],
+
         TRX: [
             {
                 'model': CoinInfo,
@@ -411,6 +464,8 @@ def main():
             },
         ],
     }
+    
+         
 
     if not IS_BSC:
         coin_info[BNB].append(
@@ -459,7 +514,21 @@ def main():
                 },
             },
         )
-
+    if not IS_ULC:
+        coin_info[TRX].append(
+            {
+                'model': DisabledCoin,
+                'find': {'currency': ULC},
+                'attributes': {
+                    'disable_all': True,
+                    'disable_stack': True,
+                    'disable_pairs': True,
+                    'disable_exchange': True,
+                    'disable_withdrawals': True,
+                    'disable_topups': True,
+                },
+            },
+        )
     with atomic():
         to_write = []
 
@@ -511,6 +580,7 @@ def main():
                 BNB: 10,
                 TRX: 100_000,
                 MATIC: 10_000,
+                ULC: 10_000,
             }
 
             for currency_id, amount in topup_list.items():
@@ -672,6 +742,35 @@ def main():
                     'low_orders_spread_size': 1,
                     'low_orders_min_order_size': 1,
                     'enabled': IS_MATIC,
+                }
+            },
+            Pair.get('ULC-USDT'): {
+                PairSettings: {
+                    'is_enabled': IS_ULC,
+                    'is_autoorders_enabled': True,
+                    'price_source': PairSettings.PRICE_SOURCE_EXTERNAL,
+                    'custom_price': 0,
+                    'deviation': 0.0,
+                    'precisions': ['10', '1', '0.1', '0.01', '0.001'],
+                },
+                BotConfig: {
+                    'name': 'ULC-USDT',
+                    'user': bot,
+                    'strategy': BotConfig.TRADE_STRATEGY_DRAW,
+                    'symbol_precision': 6,
+                    'quote_precision': 6,
+                    'instant_match': True,
+                    'ohlc_period': 60,
+                    'loop_period_random': True,
+                    'min_period': 60,
+                    'max_period': 180,
+                    'ext_price_delta': 0.001,
+                    'min_order_quantity': 10,
+                    'max_order_quantity': 10000,
+                    'low_orders_max_match_size': 1,
+                    'low_orders_spread_size': 1,
+                    'low_orders_min_order_size': 1,
+                    'enabled': IS_ULC,
                 }
             },
         }

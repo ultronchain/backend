@@ -32,3 +32,4 @@ maintenance_mode_state.txt
 docker-compose.yml
 .env
 !.gitkeep
+cryptocoins/coins/ulc/test.py

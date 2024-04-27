@@ -98,7 +98,7 @@ def ulc_wallet_creation_wrapper(user_id, is_new=False, **kwargs):
     return UserWallet.objects.filter(id=wallet.id)
 
 
-def erc20_ultron_wallet_creation_wrapper(user_id, currency, is_new=False, **kwargs):
+def erc20_ulc_wallet_creation_wrapper(user_id, currency, is_new=False, **kwargs):
     from core.models.cryptocoins import UserWallet
 
     wallet = get_or_create_erc20_ultron_wallet(
